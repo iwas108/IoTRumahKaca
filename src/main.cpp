@@ -9,13 +9,6 @@ MQTTClient iotKu;
 
 #define PIN_RELAY 33
 
-void setRelay(bool status){
-  Serial.print("Relay diset ke: ");
-  Serial.println(status);
-
-  digitalWrite(PIN_RELAY, status);
-}
-
 void ketikaAdaPesanDatang(String &topic, String &data){
   Serial.println("Ada pesan masuk di " + topic + " isinya: " + data);
 
@@ -46,8 +39,6 @@ void setup() {
   Serial.println("Menyetel password wifi.");
   wifiKu.addAP("LAB TI", "#tiundiknas");
 
-  pinMode(PIN_RELAY, OUTPUT);
-
   Serial.println("Mencoba untuk menghubungkan ke wifi.");
   if( wifiKu.run() == WL_CONNECTED ){
     Serial.println("Wifi berhasil terhubung.");
@@ -77,11 +68,6 @@ void loop() {
 
   iotKu.loop();
   delay(10); //delay 10 milidetik biar tidak capek keliling
-
-  setRelay(1);
-  delay(1000);
-  setRelay(0);
-  delay(1000);
 }
 
 
