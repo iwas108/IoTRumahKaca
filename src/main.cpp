@@ -7,7 +7,29 @@ WiFiMulti wifiKu;
 WiFiClient netKu;
 MQTTClient iotKu;
 
-#define PIN_RELAY 33
+#define PIN_LM35 A0
+#define vRef 3.30
+#define ADC_Resolution 4095
+#define LM35_Per_Degree_Volt 0.01
+#define Zero_Deg_ADC_Value 879.00
+
+float bacaSensor(){
+  float _temperature, temp_val, ADC_Per_Degree_Val;
+  int temp_adc_val;
+  ADC_Per_Degree_Val = (ADC_Resolution/vRef)*LM35_Per_Degree_Volt;
+  for (int i = 0; i < 10; i++) {
+    temp_adc_val += analogRead(PIN_LM35);  /* Read ADC value */
+    delay(10);
+  }
+  temp_adc_val = temp_adc_val/10.0;
+
+  temp_adc_val = temp_adc_val - Zero_Deg_ADC_Value;
+  temp_adc_val=(temp_adc_val/ADC_Per_Degree_Val);
+  /*Serial.print("LM35 Temperature = ");
+  Serial.print(temp_adc_val);       
+  Serial.print("°C\n");*/
+  return temp_adc_val;
+}
 
 void ketikaAdaPesanDatang(String &topic, String &data){
   Serial.println("Ada pesan masuk di " + topic + " isinya: " + data);
@@ -68,6 +90,11 @@ void loop() {
 
   iotKu.loop();
   delay(10); //delay 10 milidetik biar tidak capek keliling
+
+  Serial.print("LM35 Temperature = ");
+  Serial.print(bacaSensor());       
+  Serial.print("°C\n");
+  delay(1000);
 }
 
 
