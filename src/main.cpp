@@ -6,7 +6,7 @@
 #include <DallasTemperature.h>
 
 // GPIO where the DS18B20 is connected to
-#define PIN_SENSOR_SUHU = 4     
+#define PIN_SENSOR_SUHU 4     
 
 WiFiMulti wifiKu;
 WiFiClient netKu;
