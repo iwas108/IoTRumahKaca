@@ -6,7 +6,7 @@
 #include <DallasTemperature.h>
 
 // GPIO where the DS18B20 is connected to
-#define PIN_SENSOR_SUHU 4     
+#define PIN_SENSOR_SUHU 17     
 
 WiFiMulti wifiKu;
 WiFiClient netKu;
@@ -30,8 +30,6 @@ void iotKuConnect(){
   while(!iotKu.connect("undiknas-3127893", "undiknas", "Und1kn45")){
     Serial.print(".");
   }
-
-  Serial.println("Mensubscribe channel");
   iotKu.subscribe("undiknas/ti/sensor/#");
   iotKu.subscribe("undiknas/ti/aktuator/#");
 }
@@ -71,6 +69,7 @@ void loop() {
   iotKu.loop();
   delay(10); //delay 10 milidetik biar tidak capek keliling
 
+  sensorSuhu.requestTemperatures();
   Serial.print(sensorSuhu.getTempCByIndex(0));
   Serial.println(" ºC");
 }
