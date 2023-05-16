@@ -33,8 +33,7 @@ void iotKuConnect(){
     
   }
 
-  iotKu.subscribe("undiknas/ti/sensor/#");
-  iotKu.subscribe("undiknas/ti/aktuator/#");
+  iotKu.subscribe("undiknas/ti/sensor/1");
 }
 
 void setup() {
@@ -74,8 +73,10 @@ void loop() {
   delay(10); //delay 10 milidetik biar tidak capek keliling
 
   setRelay(1);
+  iotKu.publish("undiknas/ti/aktuator/1", 1);
   delay(1000);
   setRelay(0);
+  iotKu.publish("undiknas/ti/aktuator/1", 0);
   delay(1000);
 }
 
