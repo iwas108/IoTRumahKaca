@@ -30,8 +30,7 @@ void iotKuConnect(){
   while(!iotKu.connect("undiknas-3127893", "undiknas", "Und1kn45")){
     Serial.print(".");
   }
-  iotKu.subscribe("undiknas/ti/sensor/#");
-  iotKu.subscribe("undiknas/ti/aktuator/#");
+  iotKu.subscribe("undiknas/ti/aktuator/1");
 }
 
 void setup() {
@@ -72,6 +71,8 @@ void loop() {
   sensorSuhu.requestTemperatures();
   Serial.print(sensorSuhu.getTempCByIndex(0));
   Serial.println(" ºC");
+
+  iotKu.publish("undiknas/ti/sensor/1", String(sensorSuhu.getTempCByIndex(0)));
 }
 
 
