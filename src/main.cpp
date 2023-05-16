@@ -28,16 +28,13 @@ void ketikaAdaPesanDatang(String &topic, String &data){
 }
 
 void iotKuConnect(){
-  Serial.println("Menghubung ke broker");
-  while(!iotKu.connect("undiknas-3127893")){
-    Serial.print(".");
+    Serial.println("Menghubung ke broker");
+  while(!iotKu.connect("undiknas-3127893", "undiknas", "Und1kn45")){
+    
   }
-  Serial.println("IoT nyambung!");
 
-  Serial.println("Mensubscribe channel");
   iotKu.subscribe("undiknas/ti/sensor/#");
   iotKu.subscribe("undiknas/ti/aktuator/#");
-  Serial.println("IoT done! Siap mainkan.");
 }
 
 void setup() {
@@ -59,7 +56,7 @@ void setup() {
     Serial.println("Wifi gagal terhubung.");
   }
 
-  iotKu.begin("test.mosquitto.org", 1883, netKu);
+  iotKu.begin("mqtt.undiknas.ac.id", 1883, netKu);
   iotKu.onMessage(ketikaAdaPesanDatang);
   iotKuConnect();
 }
@@ -67,11 +64,9 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   if(wifiKu.run() != WL_CONNECTED){
-    Serial.println("Wifi terputus, telah dicoba untuk menghubung ulang.");
   }
 
   if(!iotKu.connected()){
-    Serial.println("IoTnya putus, mencoba menghubung ulang.");
     iotKuConnect();
   }
 
