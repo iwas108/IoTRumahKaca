@@ -13,7 +13,7 @@ WiFiClient netKu;
 MQTTClient iotKu;
 
 OneWire jalurData1Wire(PIN_SENSOR_SUHU);
-DallasTemperature sensorSuhu(jalurData1Wire);
+DallasTemperature sensorSuhu(&jalurData1Wire);
 
 void ketikaAdaPesanDatang(String &topic, String &data){
   Serial.println("Ada pesan masuk di " + topic + " isinya: " + data);
