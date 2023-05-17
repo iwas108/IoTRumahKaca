@@ -6,6 +6,7 @@ MQTTClient iotKu;
 
 const char* topicPublish = "undiknas/ti/aktuator/suhu/1";
 const char* topicSubscribe = "undiknas/ti/sensor/suhu/1";
+bool relayON = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,7 +26,7 @@ void loop() {
 void setRelay(bool status){
   pinMode(PIN_RELAY, OUTPUT);
   Serial.print("Relay diset ke: ");
-  Serial.println(!status);
+  Serial.println(status);
   digitalWrite(PIN_RELAY, status);
 }
 
@@ -36,11 +37,11 @@ void ketikaAdaPesanDatang(String &topic, String &data){
     float suhu = data.toFloat();
     if(suhu >= 30){
       Serial.println("Suhu panas: "+data+"°C. Aktifkan pendingin!");
-      setRelay(1);
+      setRelay(relayON);
     }
     else{
       Serial.println("Suhu normal: "+data+"°C. Matikan pendingin!");
-      setRelay(0);
+      setRelay(!relayON);
     }
   }
 }
@@ -74,7 +75,7 @@ unsigned long timer_kirimStatusRelay = millis();
 void kirimStatusRelay(){
   unsigned long now = millis();
   if( (now - timer_kirimStatusRelay) > 1000 ){
-    iotKu.publish(topicPublish, String(!digitalRead(PIN_RELAY)));
+    iotKu.publish(topicPublish, digitalRead(PIN_RELAY) == relayON ? "ON" : "OFF");
     timer_kirimStatusRelay = now;
   }
 }
