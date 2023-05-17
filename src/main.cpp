@@ -53,7 +53,8 @@ void iotKuConnect(){
     iotKu.begin("mqtt.undiknas.ac.id", 1883, netKu);
     iotKu.onMessage(ketikaAdaPesanDatang);
     Serial.print("Menghubung ke broker");
-    while(!iotKu.connect("undiknas-3127893", "undiknas", "Und1kn45")){
+    String idAcak = "joss" + String(random(1000, 1000000));
+    while(!iotKu.connect(idAcak.c_str(), "undiknas", "Und1kn45")){
       Serial.print(".");
     }
     Serial.println("");
