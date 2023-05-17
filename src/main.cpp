@@ -1,9 +1,27 @@
+#include "main.h"
+
 WiFiMulti wifiKu;
 WiFiClient netKu;
 MQTTClient iotKu;
 
 OneWire jalurData1Wire(PIN_SENSOR_SUHU);
 DallasTemperature sensorSuhu(&jalurData1Wire);
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(115200);
+  sensorSuhu.begin();
+
+  wifiKuConnect();
+  iotKuConnect();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  wifiKu.run();
+  iotKu.loop();
+  bacaSuhu();
+}
 
 void ketikaAdaPesanDatang(String &topic, String &data){
   Serial.println("Ada pesan masuk di " + topic + " isinya: " + data);
@@ -16,53 +34,39 @@ void ketikaAdaPesanDatang(String &topic, String &data){
   }
 }
 
-void iotKuConnect(){
-  while(!iotKu.connect("undiknas-3127893", "undiknas", "Und1kn45")){
+void wifiKuConnect(){
+  wifiKu.addAP("LAB TI", "#tiundiknas");
+  Serial.print("Menghubungkan ke wifi");
+  while( wifiKu.run() != WL_CONNECTED ){
     Serial.print(".");
   }
-  iotKu.subscribe("undiknas/ti/aktuator/1");
+  Serial.println("");
+  Serial.println("WiFi terhubung!");
 }
 
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-  wifiKu.addAP("LAB TI", "#tiundiknas");
-
-  sensorSuhu.begin();
-
-  Serial.println("Mencoba untuk menghubungkan ke wifi.");
-  if( wifiKu.run() == WL_CONNECTED ){
-    Serial.println("Wifi berhasil terhubung.");
-    Serial.print("Nama wifi: ");
-    Serial.print(WiFi.SSID());
-    Serial.print(". Alamat IP:");
-    Serial.println(WiFi.localIP());
-  }else{
-    Serial.println("Wifi gagal terhubung.");
-  }
-
-  iotKu.begin("mqtt.undiknas.ac.id", 1883, netKu);
-  iotKu.onMessage(ketikaAdaPesanDatang);
-  iotKuConnect();
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  if(wifiKu.run() != WL_CONNECTED){
-  }
-
+void iotKuConnect(){
   if(!iotKu.connected()){
-    iotKuConnect();
+    iotKu.begin("mqtt.undiknas.ac.id", 1883, netKu);
+    iotKu.onMessage(ketikaAdaPesanDatang);
+    Serial.print("Menghubung ke broker");
+    while(!iotKu.connect("undiknas-3127893", "undiknas", "Und1kn45")){
+      Serial.print(".");
+    }
+    Serial.println("");
+    iotKu.subscribe("undiknas/ti/aktuator/suhu/1");
+    Serial.println("IoT terhubung!");
   }
-
-  iotKu.loop();
-  delay(10); //delay 10 milidetik biar tidak capek keliling
-
-  sensorSuhu.requestTemperatures();
-  Serial.print(sensorSuhu.getTempCByIndex(0));
-  Serial.println(" ºC");
-
-  iotKu.publish("undiknas/ti/sensor/1", String(sensorSuhu.getTempCByIndex(0)));
 }
 
+unsigned long timer_bacaSuhu = millis();
+float bacaSuhu(){
+  unsigned long now = millis();
+  if( (now - timer_bacaSuhu) > 1000 ){
+    sensorSuhu.requestTemperatures();
+    float celcius = sensorSuhu.getTempCByIndex(0);
+    iotKu.publish("undiknas/ti/sensor/suhu/1", String(celcius));
+    timer_bacaSuhu = now;
+    return celcius;
+  }
+}
 
