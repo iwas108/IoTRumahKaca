@@ -4,8 +4,8 @@ WiFiMulti wifiKu;
 WiFiClient netKu;
 MQTTClient iotKu;
 
-const char* topicPublish = "undiknas/ti/sensor/suhu/1";
-const char* topicSubscribe = "undiknas/ti/aktuator/suhu/1";
+const char* topicPublish = "undiknas/ti/aktuator/suhu/1";
+const char* topicSubscribe = "undiknas/ti/sensor/suhu/1";
 
 void setup() {
   // put your setup code here, to run once:
