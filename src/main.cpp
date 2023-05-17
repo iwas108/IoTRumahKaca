@@ -74,7 +74,7 @@ unsigned long timer_kirimStatusRelay = millis();
 void kirimStatusRelay(){
   unsigned long now = millis();
   if( (now - timer_kirimStatusRelay) > 1000 ){
-    iotKu.publish(topicPublish, String(digitalRead(PIN_RELAY)));
+    iotKu.publish(topicPublish, String(!digitalRead(PIN_RELAY)));
     timer_kirimStatusRelay = now;
   }
 }
