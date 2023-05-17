@@ -22,6 +22,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   wifiKu.run();
+  iotKuConnect();
   iotKu.loop();
   bacaSuhu();
 }
