@@ -25,7 +25,7 @@ void loop() {
 void setRelay(bool status){
   pinMode(PIN_RELAY, OUTPUT);
   Serial.print("Relay diset ke: ");
-  Serial.println(status);
+  Serial.println(!status);
   digitalWrite(PIN_RELAY, status);
 }
 
