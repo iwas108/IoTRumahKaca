@@ -4,7 +4,8 @@ WiFiMulti wifiKu;
 WiFiClient netKu;
 MQTTClient iotKu;
 
-#define PIN_RELAY 33
+const char* topicPublish = "undiknas/ti/sensor/suhu/1";
+const char* topicSubscribe = "undiknas/ti/aktuator/suhu/1";
 
 void setup() {
   // put your setup code here, to run once:
@@ -18,6 +19,7 @@ void loop() {
   wifiKu.run();
   iotKuConnect();
   iotKu.loop();
+  kirimStatusRelay();
 }
 
 void setRelay(bool status){
@@ -30,7 +32,7 @@ void setRelay(bool status){
 void ketikaAdaPesanDatang(String &topic, String &data){
   Serial.println("Ada pesan masuk di " + topic + " isinya: " + data);
 
-  if(topic == "undiknas/ti/sensor/suhu/1"){
+  if(topic == topicSubscribe){
     float suhu = data.toFloat();
     if(suhu >= 30){
       Serial.println("Suhu panas: "+data+"°C. Aktifkan pendingin!");
@@ -63,7 +65,16 @@ void iotKuConnect(){
       Serial.print(".");
     }
     Serial.println("");
-    iotKu.subscribe("undiknas/ti/sensor/suhu/1");
+    iotKu.subscribe(topicSubscribe);
     Serial.println("IoT terhubung!");
+  }
+}
+
+unsigned long timer_kirimStatusRelay = millis();
+void kirimStatusRelay(){
+  unsigned long now = millis();
+  if( (now - timer_kirimStatusRelay) > 1000 ){
+    iotKu.publish(topicPublish, String(digitalRead(PIN_RELAY)));
+    timer_kirimStatusRelay = now;
   }
 }
