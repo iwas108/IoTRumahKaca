@@ -7,6 +7,9 @@ MQTTClient iotKu;
 OneWire jalurData1Wire(PIN_SENSOR_SUHU);
 DallasTemperature sensorSuhu(&jalurData1Wire);
 
+const char* topicPublish = "undiknas/ti/sensor/suhu/1";
+const char* topicSubscribe = "undiknas/ti/aktuator/suhu/1";
+
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
@@ -53,7 +56,7 @@ void iotKuConnect(){
       Serial.print(".");
     }
     Serial.println("");
-    iotKu.subscribe("undiknas/ti/aktuator/suhu/1");
+    iotKu.subscribe(topicSubscribe);
     Serial.println("IoT terhubung!");
   }
 }
@@ -64,7 +67,12 @@ float bacaSuhu(){
   if( (now - timer_bacaSuhu) > 1000 ){
     sensorSuhu.requestTemperatures();
     float celcius = sensorSuhu.getTempCByIndex(0);
-    iotKu.publish("undiknas/ti/sensor/suhu/1", String(celcius));
+    Serial.print("Mengirim data suhu ke ");
+    Serial.print(topicPublish);
+    Serial.print(" dengan nilai ");
+    Serial.print(celcius);
+    Serial.println("°C");
+    iotKu.publish(topicPublish, String(celcius));
     timer_bacaSuhu = now;
     return celcius;
   }
