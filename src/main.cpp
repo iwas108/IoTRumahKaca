@@ -1,13 +1,3 @@
-#include <Arduino.h>
-#include <WiFi.h>
-#include <WiFiMulti.h>
-#include <MQTT.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-
-// GPIO where the DS18B20 is connected to
-#define PIN_SENSOR_SUHU 17     
-
 WiFiMulti wifiKu;
 WiFiClient netKu;
 MQTTClient iotKu;
