@@ -10,4 +10,4 @@
 void wifiKuConnect();
 void iotKuConnect();
 void ketikaAdaPesanDatang(String &topic, String &data);
-float bacaSuhu();
+void bacaSuhu();

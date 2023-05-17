@@ -63,7 +63,7 @@ void iotKuConnect(){
 }
 
 unsigned long timer_bacaSuhu = millis();
-float bacaSuhu(){
+void bacaSuhu(){
   unsigned long now = millis();
   if( (now - timer_bacaSuhu) > 1000 ){
     sensorSuhu.requestTemperatures();
@@ -75,7 +75,6 @@ float bacaSuhu(){
     Serial.println("°C");
     iotKu.publish(topicPublish, String(celcius));
     timer_bacaSuhu = now;
-    return celcius;
   }
 }
 
