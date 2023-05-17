@@ -30,11 +30,8 @@ void loop() {
 void ketikaAdaPesanDatang(String &topic, String &data){
   Serial.println("Ada pesan masuk di " + topic + " isinya: " + data);
 
-  if(topic == "undiknas/ti/sensor/suhu/1"){
-    float suhu = data.toFloat();
-    if(suhu >= 30){
-      Serial.println("Suhu panas: "+data+"C. Aktifkan pendingin!");
-    }
+  if(topic == topicSubscribe){
+    Serial.println("Status relay saat ini adalah: "+data);
   }
 }
 
