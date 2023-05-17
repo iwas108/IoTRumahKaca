@@ -44,7 +44,7 @@ void ketikaAdaPesanDatang(String &topic, String &data){
 }
 
 void wifiKuConnect(){
-  wifiKu.addAP("Wokwi-GUEST", "");
+  wifiKu.addAP("LAB TI", "#tiundiknas");
   Serial.print("Menghubungkan ke wifi");
   while( wifiKu.run() != WL_CONNECTED ){
     Serial.print(".");
