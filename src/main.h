@@ -2,6 +2,7 @@
 #define main_h
 #include <Arduino.h>
 #include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <WiFiMulti.h>
 #include <MQTT.h>
 

@@ -1,7 +1,7 @@
 #include "main.h"
 
 WiFiMulti wifiKu;
-WiFiClient netKu;
+WiFiClientSecure netKu;
 MQTTClient iotKu;
 
 const char* topicPublish = "undiknas/ti/aktuator/kipas/1";
@@ -52,7 +52,7 @@ void ketikaAdaPesanDatang(String &topic, String &data){
 }
 
 void wifiKuConnect(){
-  wifiKu.addAP("LAB TI", "#tiundiknas");
+  wifiKu.addAP("Wokwi-GUEST", "");
   Serial.print("Menghubungkan ke wifi");
   while( wifiKu.run() != WL_CONNECTED ){
     Serial.print(".");
@@ -63,7 +63,8 @@ void wifiKuConnect(){
 
 void iotKuConnect(){
   if(!iotKu.connected()){
-    iotKu.begin("mqtt.undiknas.ac.id", 1883, netKu);
+    netKu.setInsecure();
+    iotKu.begin("2e8aeb43a4694b348a69cc8a4d4bf39a.s2.eu.hivemq.cloud", 8883, netKu);
     iotKu.onMessage(ketikaAdaPesanDatang);
     Serial.print("Menghubung ke broker");
     String idAcak = "joss" + String(random(1000, 1000000));
