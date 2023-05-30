@@ -37,7 +37,8 @@
                         <h5 class="card-title">Kontrol Blower</h5>
                         <hr>
                         <label for="rangeSuhu" class="form-label">Suhu Kipas Aktif</label>
-                        <input type="range" class="form-range" min="0" max="100" step="0.5" value="0" id="rangeSuhu">
+                        <input name="rangeSuhu" type="range" class="form-range" min="0" max="100" step="0.5" value="0" id="rangeSuhu">
+                        <small>Ambang batas: <span id="ambangBatas" class="badge text-bg-danger"></span>°C</small>
                     </div>
                 </div>
             </div>
@@ -46,7 +47,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Suhu Saat Ini</h5>
                         <hr>
-                        <h1>25°C (Normal)</h1>
+                        <h1 id="data-suhu">25°C (Normal)</h1>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,5 @@
+var ambangBatas = 25;
+
 function makeid(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -53,10 +55,11 @@ $( document ).ready(function() {
     function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
         console.log("onConnect");
-        client.subscribe("");
-        message = new Paho.MQTT.Message("Hello");
-        message.destinationName = "/World";
-        client.send(message); 
+        client.subscribe("undiknas/ti/sensor/suhu/1");
+        client.subscribe("undiknas/ti/sensor/aktuator/1");
+        //message = new Paho.MQTT.Message("Hello");
+        //message.destinationName = "/World";
+        //client.send(message); 
     }
 
     // called when the client loses its connection
@@ -68,7 +71,19 @@ $( document ).ready(function() {
 
     // called when a message arrives
     function onMessageArrived(message) {
-        console.log("onMessageArrived:"+message.payloadString);
+        if(message.destinationName == "undiknas/ti/sensor/suhu/1"){
+            let status = message.payloadString > ambangBatas ? "Panas" : "Normal";
+            let data = message.payloadString + "°C " + "(" + status + ")";
+            $("#data-suhu").html(data);
+        }
+        else if(message.destinationName == "undiknas/ti/aktuator/suhu/1"){
+            //$("").html("");
+        }
     }
+
+    $('#rangeSuhu').on("change mousemove", function() {
+        $("#ambangBatas").html($(this).val());
+        ambangBatas = $(this).val();
+    });
  
 });
