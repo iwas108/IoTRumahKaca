@@ -6,7 +6,9 @@ MQTTClient iotKu;
 
 const char* topicPublish = "undiknas/ti/aktuator/kipas/1";
 const char* topicSubscribe = "undiknas/ti/sensor/suhu/1";
+const char* topicAmbangBatas = "undiknas/ti/aktuator/kipas/1/ambang-batas";
 bool relayON = 0;
+float ambangBatas = 30;
 
 void setup() {
   // put your setup code here, to run once:
@@ -35,7 +37,7 @@ void ketikaAdaPesanDatang(String &topic, String &data){
 
   if(topic == topicSubscribe){
     float suhu = data.toFloat();
-    if(suhu >= 30){
+    if(suhu >= ambangBatas){
       Serial.println("Suhu panas: "+data+"°C. Aktifkan pendingin!");
       setRelay(relayON);
     }
@@ -43,6 +45,9 @@ void ketikaAdaPesanDatang(String &topic, String &data){
       Serial.println("Suhu normal: "+data+"°C. Matikan pendingin!");
       setRelay(!relayON);
     }
+  }
+  else if(topic == topicAmbangBatas){
+    ambangBatas = (float) data.toFloat();
   }
 }
 
