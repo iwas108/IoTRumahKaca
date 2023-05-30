@@ -1,4 +1,5 @@
 var ambangBatas = 25;
+var dataCount = 0;
 
 function makeid(length) {
     let result = '';
@@ -15,12 +16,12 @@ function makeid(length) {
 $( document ).ready(function() {
     const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
+    var myChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: [],
             datasets: [{
-            label: 'Suhu Rumah Kaca',
+            label: 'Suhu',
             data: [],
             borderWidth: 1
             }]
@@ -56,7 +57,7 @@ $( document ).ready(function() {
         // Once a connection has been made, make a subscription and send a message.
         console.log("onConnect");
         client.subscribe("undiknas/ti/sensor/suhu/1");
-        client.subscribe("undiknas/ti/sensor/aktuator/1");
+        client.subscribe("undiknas/ti/aktuator/kipas/1");
         //message = new Paho.MQTT.Message("Hello");
         //message.destinationName = "/World";
         //client.send(message); 
@@ -71,19 +72,58 @@ $( document ).ready(function() {
 
     // called when a message arrives
     function onMessageArrived(message) {
+        console.log(message.payloadString);
         if(message.destinationName == "undiknas/ti/sensor/suhu/1"){
             let status = message.payloadString > ambangBatas ? "Panas" : "Normal";
             let data = message.payloadString + "°C " + "(" + status + ")";
             $("#data-suhu").html(data);
+
+            var date = new Date;
+            var seconds = date.getSeconds();
+            var minutes = date.getMinutes();
+            var hour = date.getHours();
+            var label = hour + ":" + minutes + ":" + seconds;
+            addData(myChart, label, message.payloadString);
+    
+            if(dataCount > 10){
+                shiftData(myChart);
+            }
+            dataCount++;
         }
-        else if(message.destinationName == "undiknas/ti/aktuator/suhu/1"){
-            //$("").html("");
+        else if(message.destinationName == "undiknas/ti/aktuator/kipas/1"){
+            if(parseInt(message.payloadString) == 1)
+            {
+                $("#statusBlower").html('<button type="button" class="btn btn-success">☢️ ON</button>');
+            }
+            else
+            {
+                $("#statusBlower").html('<button type="button" class="btn btn-danger">☢️ OFF</button>');
+            }
         }
     }
 
-    $('#rangeSuhu').on("change mousemove", function() {
+    $('#rangeSuhu').on("change", function() {
         $("#ambangBatas").html($(this).val());
         ambangBatas = $(this).val();
+        message = new Paho.MQTT.Message(ambangBatas);
+        message.destinationName = "undiknas/ti/aktuator/kipas/1/ambang-batas";
+        client.send(message);
     });
+
+    function addData(chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();
+    }
+    
+    function shiftData(chart, label, data) {
+        chart.data.labels.shift();
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.shift();
+        });
+        chart.update();
+    }
  
 });
