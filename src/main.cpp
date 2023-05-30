@@ -8,7 +8,7 @@ OneWire jalurData1Wire(PIN_SENSOR_SUHU);
 DallasTemperature sensorSuhu(&jalurData1Wire);
 
 const char* topicPublish = "undiknas/ti/sensor/suhu/1";
-const char* topicSubscribe = "undiknas/ti/aktuator/suhu/1";
+const char* topicSubscribe = "undiknas/ti/aktuator/kipas/1";
 
 void setup() {
   // put your setup code here, to run once:
