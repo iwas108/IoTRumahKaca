@@ -91,7 +91,7 @@ $( document ).ready(function() {
             dataCount++;
         }
         else if(message.destinationName == "undiknas/ti/aktuator/kipas/1"){
-            if(parseInt(message.payloadString) == 1)
+            if(message.payloadString == "ON")
             {
                 $("#statusBlower").html('<button type="button" class="btn btn-success">☢️ ON</button>');
             }
