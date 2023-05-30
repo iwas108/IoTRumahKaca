@@ -4,7 +4,7 @@ WiFiMulti wifiKu;
 WiFiClient netKu;
 MQTTClient iotKu;
 
-const char* topicPublish = "undiknas/ti/aktuator/suhu/1";
+const char* topicPublish = "undiknas/ti/aktuator/kipas/1";
 const char* topicSubscribe = "undiknas/ti/sensor/suhu/1";
 bool relayON = 0;
 
