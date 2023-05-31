@@ -7,6 +7,7 @@ MQTTClient iotKu;
 const char* topicPublish = "undiknas/ti/aktuator/kipas/2";
 const char* topicSubscribe = "undiknas/ti/sensor/suhu/2";
 const char* topicAmbangBatas = "undiknas/ti/aktuator/kipas/2/ambang-batas";
+const char* topicAmbangBatasFeed = "undiknas/ti/aktuator/kipas/2/ambang-batas/feed";
 bool relayON = 0;
 float ambangBatas = 30;
 
@@ -83,7 +84,7 @@ void kirimStatusRelay(){
   unsigned long now = millis();
   if( (now - timer_kirimStatusRelay) > 1000 ){
     iotKu.publish(topicPublish, digitalRead(PIN_RELAY) == relayON ? "ON" : "OFF");
-    iotKu.publish(topicAmbangBatas, String(ambangBatas));
+    iotKu.publish(topicAmbangBatasFeed, String(ambangBatas));
     timer_kirimStatusRelay = now;
   }
 }

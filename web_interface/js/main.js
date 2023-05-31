@@ -59,7 +59,7 @@ $( document ).ready(function() {
         console.log("onConnect");
         client.subscribe("undiknas/ti/sensor/suhu/"+groupId);
         client.subscribe("undiknas/ti/aktuator/kipas/"+groupId);
-        client.subscribe("undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas");
+        client.subscribe("undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas/feed");
         //message = new Paho.MQTT.Message("Hello");
         //message.destinationName = "/World";
         //client.send(message); 
@@ -102,9 +102,10 @@ $( document ).ready(function() {
                 $("#statusBlower").html('<button type="button" class="btn btn-danger">☢️ OFF</button>');
             }
         }
-        else if(message.destinationName == "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas"){
+        else if(message.destinationName == "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas/feed"){
             ambangBatas = parseFloat(message.payloadString);
             $('#rangeSuhu').val(ambangBatas);
+            console.log(ambangBatas);
         }
     }
 
