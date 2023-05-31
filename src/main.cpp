@@ -1,14 +1,14 @@
 #include "main.h"
 
 WiFiMulti wifiKu;
-WiFiClient netKu;
+WiFiClientSecure netKu;
 MQTTClient iotKu;
 
 OneWire jalurData1Wire(PIN_SENSOR_SUHU);
 DallasTemperature sensorSuhu(&jalurData1Wire);
 
-const char* topicPublish = "undiknas/ti/sensor/suhu/1";
-const char* topicSubscribe = "undiknas/ti/aktuator/kipas/1";
+const char* topicPublish = "undiknas/ti/sensor/suhu/2";
+const char* topicSubscribe = "undiknas/ti/aktuator/kipas/2";
 
 void setup() {
   // put your setup code here, to run once:
@@ -47,7 +47,8 @@ void wifiKuConnect(){
 
 void iotKuConnect(){
   if(!iotKu.connected()){
-    iotKu.begin("mqtt.undiknas.ac.id", 1883, netKu);
+    netKu.setInsecure();
+    iotKu.begin("2e8aeb43a4694b348a69cc8a4d4bf39a.s2.eu.hivemq.cloud", 8883, netKu);
     iotKu.onMessage(ketikaAdaPesanDatang);
     Serial.print("Menghubung ke broker");
     String idAcak = "joss" + String(random(1000, 1000000));
