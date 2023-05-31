@@ -111,7 +111,7 @@ $( document ).ready(function() {
 
     $('#rangeSuhu').on("change", function() {
         $("#ambangBatas").html($(this).val());
-        ambangBatas = $(this).val();
+        ambangBatas = $(this).val());
         message = new Paho.MQTT.Message(ambangBatas);
         message.destinationName = "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas";
         client.send(message);
