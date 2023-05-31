@@ -105,13 +105,13 @@ $( document ).ready(function() {
         else if(message.destinationName == "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas"){
             ambangBatas = parseFloat(message.payloadString);
             $('#rangeSuhu').val(ambangBatas);
-            $("#ambangBatas").html($(ambangBatas);
+            $("#ambangBatas").html($(ambangBatas));
         }
     }
 
     $('#rangeSuhu').on("change", function() {
         $("#ambangBatas").html($(this).val());
-        ambangBatas = $(this).val());
+        ambangBatas = $(this).val();
         message = new Paho.MQTT.Message(ambangBatas);
         message.destinationName = "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas";
         client.send(message);
