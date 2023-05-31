@@ -1,5 +1,6 @@
 var ambangBatas = 25;
 var dataCount = 0;
+var groupId = 1;
 
 function makeid(length) {
     let result = '';
@@ -56,8 +57,8 @@ $( document ).ready(function() {
     function onConnect() {
         // Once a connection has been made, make a subscription and send a message.
         console.log("onConnect");
-        client.subscribe("undiknas/ti/sensor/suhu/1");
-        client.subscribe("undiknas/ti/aktuator/kipas/1");
+        client.subscribe("undiknas/ti/sensor/suhu/"+groupId);
+        client.subscribe("undiknas/ti/aktuator/kipas/"+groupId);
         //message = new Paho.MQTT.Message("Hello");
         //message.destinationName = "/World";
         //client.send(message); 
@@ -73,7 +74,7 @@ $( document ).ready(function() {
     // called when a message arrives
     function onMessageArrived(message) {
         console.log(message.payloadString);
-        if(message.destinationName == "undiknas/ti/sensor/suhu/1"){
+        if(message.destinationName == "undiknas/ti/sensor/suhu/"+groupId){
             let status = message.payloadString > ambangBatas ? "Panas" : "Normal";
             let data = message.payloadString + "°C " + "(" + status + ")";
             $("#data-suhu").html(data);
@@ -90,7 +91,7 @@ $( document ).ready(function() {
             }
             dataCount++;
         }
-        else if(message.destinationName == "undiknas/ti/aktuator/kipas/1"){
+        else if(message.destinationName == "undiknas/ti/aktuator/kipas/"+groupId){
             if(message.payloadString == "ON")
             {
                 $("#statusBlower").html('<button type="button" class="btn btn-success">☢️ ON</button>');
@@ -106,7 +107,7 @@ $( document ).ready(function() {
         $("#ambangBatas").html($(this).val());
         ambangBatas = $(this).val();
         message = new Paho.MQTT.Message(ambangBatas);
-        message.destinationName = "undiknas/ti/aktuator/kipas/1/ambang-batas";
+        message.destinationName = "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas";
         client.send(message);
     });
 
