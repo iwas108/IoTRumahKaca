@@ -87,7 +87,7 @@ $( document ).ready(function() {
             var label = hour + ":" + minutes + ":" + seconds;
             addData(myChart, label, message.payloadString);
     
-            if(dataCount > 10){
+            if(dataCount > 100){
                 shiftData(myChart);
             }
             dataCount++;
