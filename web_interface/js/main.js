@@ -87,7 +87,7 @@ $( document ).ready(function() {
             var label = hour + ":" + minutes + ":" + seconds;
             addData(myChart, label, message.payloadString);
     
-            if(dataCount > 10){
+            if(dataCount > 100){
                 shiftData(myChart);
             }
             dataCount++;
@@ -105,7 +105,7 @@ $( document ).ready(function() {
         else if(message.destinationName == "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas"){
             ambangBatas = parseFloat(message.payloadString);
             $('#rangeSuhu').val(ambangBatas);
-            console.log(ambangBatas);
+            $("#ambangBatas").html(ambangBatas);
         }
     }
 
