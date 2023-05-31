@@ -1,6 +1,6 @@
 var ambangBatas = 25;
 var dataCount = 0;
-var groupId = 1;
+var groupId = 2;
 
 function makeid(length) {
     let result = '';

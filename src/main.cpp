@@ -4,9 +4,9 @@ WiFiMulti wifiKu;
 WiFiClientSecure netKu;
 MQTTClient iotKu;
 
-const char* topicPublish = "undiknas/ti/aktuator/kipas/1";
-const char* topicSubscribe = "undiknas/ti/sensor/suhu/1";
-const char* topicAmbangBatas = "undiknas/ti/aktuator/kipas/1/ambang-batas";
+const char* topicPublish = "undiknas/ti/aktuator/kipas/2";
+const char* topicSubscribe = "undiknas/ti/sensor/suhu/2";
+const char* topicAmbangBatas = "undiknas/ti/aktuator/kipas/2/ambang-batas";
 bool relayON = 0;
 float ambangBatas = 30;
 
@@ -38,11 +38,11 @@ void ketikaAdaPesanDatang(String &topic, String &data){
   if(topic == topicSubscribe){
     float suhu = data.toFloat();
     if(suhu >= ambangBatas){
-      Serial.println("Suhu panas: "+data+"°C. Aktifkan pendingin!");
+      Serial.println("Ambang batas:" + String(ambangBatas) + " - Suhu panas: "+data+"°C. Aktifkan pendingin!");
       setRelay(relayON);
     }
     else{
-      Serial.println("Suhu normal: "+data+"°C. Matikan pendingin!");
+      Serial.println("Ambang batas:" + String(ambangBatas) + " - Suhu normal: "+data+"°C. Matikan pendingin!");
       setRelay(!relayON);
     }
   }
@@ -73,6 +73,7 @@ void iotKuConnect(){
     }
     Serial.println("");
     iotKu.subscribe(topicSubscribe);
+    iotKu.subscribe(topicAmbangBatas);
     Serial.println("IoT terhubung!");
   }
 }
