@@ -39,7 +39,7 @@ $( document ).ready(function() {
     });
 
     // Create a client instance
-    client = new Paho.MQTT.Client("2e8aeb43a4694b348a69cc8a4d4bf39a.s2.eu.hivemq.cloud", Number(8884), "undiknas-"+makeid());
+    client = new Paho.MQTT.Client("2e8aeb43a4694b348a69cc8a4d4bf39a.s2.eu.hivemq.cloud", Number(8884), "undiknas-"+makeid(8));
 
     // set callback handlers
     client.onConnectionLost = onConnectionLost;
