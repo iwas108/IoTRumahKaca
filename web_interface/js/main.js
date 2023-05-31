@@ -105,7 +105,7 @@ $( document ).ready(function() {
         else if(message.destinationName == "undiknas/ti/aktuator/kipas/"+groupId+"/ambang-batas"){
             ambangBatas = parseFloat(message.payloadString);
             $('#rangeSuhu').val(ambangBatas);
-            console.log(ambangBatas);
+            $("#ambangBatas").html($(ambangBatas);
         }
     }
 
