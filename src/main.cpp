@@ -83,7 +83,7 @@ void kirimStatusRelay(){
   unsigned long now = millis();
   if( (now - timer_kirimStatusRelay) > 1000 ){
     iotKu.publish(topicPublish, digitalRead(PIN_RELAY) == relayON ? "ON" : "OFF");
-    iotKu.publish(topicAmbangBatas, Strin(ambangBatas));
+    iotKu.publish(topicAmbangBatas, String(ambangBatas));
     timer_kirimStatusRelay = now;
   }
 }
